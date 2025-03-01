@@ -1,9 +1,11 @@
 import { create_inputs } from './inputs.mjs';
 
 /**
+ * @template TResources
  * @param {HTMLCanvasElement} canvas
+ * @param {TResources} resources
  */
-export const create_engine_context = canvas => {
+export const create_engine_context = (canvas, resources) => {
   const __ctx = canvas.getContext('2d');
 
   if (!__ctx) {
@@ -29,23 +31,27 @@ export const create_engine_context = canvas => {
     delta_mul: 0,
 
     is_paused: false,
+
+    resources,
   };
 };
 
 /**
- * @template T
+ * @template TGameState
+ * @template TResources
  * @param {() => HTMLCanvasElement} canvas
- * @param {{ create: () => T, copy: (from: T, to: T) => void }} game_state
- * @param {(engine: DUDOL.EngineContext, game: { current: T, prev: T }) => void} on_frame
+ * @param {() => Promise<TResources>} load_resources
+ * @param {{ create: () => TGameState, copy: (from: TGameState, to: TGameState) => void }} game_state
+ * @param {(engine: DUDOL.EngineContext, game: { current: TGameState, prev: TGameState }) => void} on_frame
  */
-export const loop = (canvas, game_state, on_frame) => {
-  const engine = create_engine_context(canvas());
+export const loop = async (canvas, load_resources, game_state, on_frame) => {
+  const engine = create_engine_context(canvas(), await load_resources());
 
   engine.__prev_frame_time = performance.now();
 
   const outer_loop =
     /**
-     * @this {{ engine: DUDOL.EngineContext, game: { current: T, prev: T }, game_state: typeof game_state, on_frame: typeof on_frame }}
+     * @this {{ engine: DUDOL.EngineContext, game: { current: TGameState, prev: TGameState }, game_state: typeof game_state, on_frame: typeof on_frame }}
      * @param {number} time
      */
     function inner_loop(time) {
@@ -62,6 +68,7 @@ export const loop = (canvas, game_state, on_frame) => {
 
       this.engine.__raf = requestAnimationFrame(time => inner_loop.call(this, time));
     }.bind({
+      // @ts-expect-error
       engine: engine,
       game: {
         current: game_state.create(),

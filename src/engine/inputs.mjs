@@ -5,7 +5,7 @@ export const create_inputs = () => {
     ArrowDown: false,
     ArrowLeft: false,
     Space: false,
-    KeyP: false,
+    KeyD: false,
   };
 
   window.addEventListener(
@@ -25,8 +25,8 @@ export const create_inputs = () => {
         this.ArrowLeft = true;
       } else if (event.code === 'Space') {
         this.Space = true;
-      } else if (event.code === 'KeyP') {
-        this.KeyP = true;
+      } else if (event.code === 'KeyD') {
+        this.KeyD = true;
       }
     }.bind(inputs)
   );
@@ -48,8 +48,8 @@ export const create_inputs = () => {
         this.ArrowLeft = false;
       } else if (event.code === 'Space') {
         this.Space = false;
-      } else if (event.code === 'KeyP') {
-        this.KeyP = false;
+      } else if (event.code === 'KeyD') {
+        this.KeyD = false;
       }
     }.bind(inputs)
   );
