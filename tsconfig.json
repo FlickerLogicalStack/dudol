@@ -4,7 +4,6 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "esModuleInterop": true,
-    "jsx": "react",
     "lib": ["DOM", "DOM.Iterable", "ES2020", "ES2020.Promise"],
     "module": "commonjs",
     "noEmit": true,
@@ -14,8 +13,9 @@
     "resolveJsonModule": true,
     "rootDir": ".",
     "strict": true,
-    "target": "ES2019",
+    "target": "ESNext",
     "skipLibCheck": true,
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "checkJs": true
   }
 }

@@ -1,5 +1,3 @@
-// @ts-check
-
 import { create_inputs } from './inputs.mjs';
 
 /**
@@ -26,6 +24,7 @@ export const create_engine_context = canvas => {
     ctx: __ctx,
 
     inputs: create_inputs(),
+    frame: 0,
     delta: 0,
     delta_mul: 0,
 
@@ -36,8 +35,8 @@ export const create_engine_context = canvas => {
 /**
  * @template T
  * @param {() => HTMLCanvasElement} canvas
- * @param {() => T} game_state
- * @param {(engine: DUDOL.EngineContext, game: T) => void} on_frame
+ * @param {{ create: () => T, copy: (from: T, to: T) => void }} game_state
+ * @param {(engine: DUDOL.EngineContext, game: { current: T, prev: T }) => void} on_frame
  */
 export const loop = (canvas, game_state, on_frame) => {
   const engine = create_engine_context(canvas());
@@ -46,12 +45,11 @@ export const loop = (canvas, game_state, on_frame) => {
 
   const outer_loop =
     /**
-     * @this {{ engine: DUDOL.EngineContext, game: T, on_frame: typeof on_frame }}
+     * @this {{ engine: DUDOL.EngineContext, game: { current: T, prev: T }, game_state: typeof game_state, on_frame: typeof on_frame }}
      * @param {number} time
      */
     function inner_loop(time) {
-      // console.log(time);
-
+      this.engine.frame += 1;
       this.engine.delta = (time - this.engine.__prev_frame_time) | 0;
       this.engine.delta_mul = this.engine.delta / 1000;
       this.engine.__prev_frame_time = time | 0;
@@ -60,14 +58,16 @@ export const loop = (canvas, game_state, on_frame) => {
 
       this.on_frame(this.engine, this.game);
 
-      this.engine.__raf = requestAnimationFrame(time => inner_loop.call(this, time));
+      game_state.copy(this.game.current, this.game.prev);
 
-      // if (this.engine.is_paused) {
-      //   cancelAnimationFrame(this.engine.__raf);
-      // }
+      this.engine.__raf = requestAnimationFrame(time => inner_loop.call(this, time));
     }.bind({
       engine: engine,
-      game: game_state(),
+      game: {
+        current: game_state.create(),
+        prev: game_state.create(),
+      },
+      game_state,
       on_frame,
     });
 
