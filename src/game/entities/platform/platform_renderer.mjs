@@ -8,14 +8,15 @@ export const render_platform = (engine, game, platform) => {
 
   engine.ctx.imageSmoothingEnabled = false;
 
-  const sprites_map = engine.resources.map.platforms[platform.id % 3];
+  // const sprites_map = engine.resources.map.platforms[platform.id % engine.resources.map.platforms.length];
+  const sprites_map = engine.resources.map.platforms[platform.style];
 
   const left = sprites_map[0];
   const center = sprites_map[1];
   const right = sprites_map[2];
 
   engine.ctx.drawImage(
-    engine.resources.sprites3,
+    engine.resources.sprites2,
     left.x,
     left.y,
     left.size,
@@ -28,7 +29,7 @@ export const render_platform = (engine, game, platform) => {
 
   for (var i = 1; i < platform.width / 32 - 1; i++) {
     engine.ctx.drawImage(
-      engine.resources.sprites3,
+      engine.resources.sprites2,
       center.x,
       center.y,
       center.size,
@@ -41,14 +42,14 @@ export const render_platform = (engine, game, platform) => {
   }
 
   engine.ctx.drawImage(
-    engine.resources.sprites3,
+    engine.resources.sprites2,
     right.x,
     right.y,
     right.size,
     right.size,
-    platform.x + platform.width - platform.height,
+    platform.x + platform.width - platform.height - 1,
     local_y,
-    platform.height,
+    platform.height + 1,
     platform.height
   );
 

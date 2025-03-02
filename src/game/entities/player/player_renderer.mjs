@@ -9,10 +9,10 @@ export const render_player = (engine, game) => {
   const is_right = game.player.x_velocity > 0;
   const is_left = game.player.x_velocity < 0;
 
-  const SPRITE_X = is_falling ? 85 : is_right || is_left ? 68 : 0;
-  const SPRITE_Y = is_falling ? 204 : 204;
-  const SPRITE_WIDTH = 16;
-  const SPRITE_HEIGHT = 16;
+  const SPRITE_X = is_falling ? 63 : is_right || is_left ? 18 : 0;
+  const SPRITE_Y = is_falling ? 54 : 63;
+  const SPRITE_WIDTH = 8;
+  const SPRITE_HEIGHT = 8;
 
   const render_x = game.player.x;
   const render_y = engine.canvas.height - game.player.y - game.player.height + game.camera.y - game.camera.offset;
@@ -23,7 +23,7 @@ export const render_player = (engine, game) => {
   }
 
   engine.ctx.drawImage(
-    engine.resources.sprites3,
+    engine.resources.sprites2,
     SPRITE_X,
     SPRITE_Y,
     SPRITE_WIDTH,

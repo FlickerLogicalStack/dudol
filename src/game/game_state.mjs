@@ -16,9 +16,12 @@ export const create_game_state = engine => {
   const debug = create_debug();
   const progress = create_progress();
 
+  const floor = create_platform(0, 0, 0, engine.canvas.width);
+  floor.style = 2;
+
   return {
     player: player,
-    platforms: [create_platform(0, 0, 0, engine.canvas.width)],
+    platforms: [floor],
     camera: camera,
     physics: physics,
     debug: debug,

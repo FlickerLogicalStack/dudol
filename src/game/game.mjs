@@ -8,6 +8,7 @@ import { render_debug } from './entities/debug/debug_renderer.mjs';
 import { render_platform } from './entities/platform/platform_renderer.mjs';
 import { render_player } from './entities/player/player_renderer.mjs';
 import { render_score } from './entities/progress/score_renderer.mjs';
+import { render_background } from './entities/misc/render_background.mjs';
 
 // #region [LOOP]
 loop(
@@ -21,10 +22,9 @@ loop(
 
     render_test(engine, game.current);
 
+    render_background(engine, game.current);
     render_platforms(engine, game.current);
-
     render_player(engine, game.current);
-
     render_score(engine, game.current);
 
     if (game.current.debug.enabled === 1) {
@@ -228,7 +228,7 @@ const handle_physics = (engine, game_buffer) => {
   // #region [CAMERA]
   // if (player.y > camera.y) {
   // }
-  camera.y = Math.floor(player.y);
+  camera.y = Math.floor(Math.max(player.y, camera.offset));
   // #endregion
 
   // #region [PLATFORM_GENERATOR]

@@ -33,6 +33,8 @@ export const generate_platform = (engine, game) => {
 
     new_platform.move_to_x = new_platform.x + randrange(-200, 200);
     new_platform.move_to_y = new_platform.y + randrange(-200, 200);
+
+    new_platform.style = 1;
   }
 
   console.log(new_platform);

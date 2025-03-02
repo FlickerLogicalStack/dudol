@@ -47,6 +47,8 @@ declare global {
         width: number;
         height: number;
 
+        style: number;
+
         is_visible: boolean;
         is_in_x_borders: boolean;
 

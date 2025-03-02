@@ -11,4 +11,15 @@
   "⬜️ for": {
     "body": ["for (let i = 0; i < $1; i++) {", "$0", "}"]
   },
+  "⬜️ game_fn": {
+    "body": [
+      "/**",
+      " * @param {DUDOL.EngineContext} engine",
+      " * @param {DUDOL.GameState} game",
+      " */",
+      "const $1 = (engine, game) => {",
+      "  $0",
+      "};",
+    ]
+  },
 }
