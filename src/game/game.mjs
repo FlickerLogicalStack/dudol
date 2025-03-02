@@ -10,6 +10,11 @@ import { render_debug } from './entities/debug/debug_renderer.mjs';
 import { render_platform } from './entities/platform/platform_renderer.mjs';
 import { render_player } from './entities/player/player_renderer.mjs';
 import { render_score } from './entities/progress/score_renderer.mjs';
+import { render_particles } from './entities/particle/particle_renderer.mjs';
+import {
+  generate_fly_player_particles,
+  generate_platform_bounce_particles,
+} from './entities/particle/particle_generators.mjs';
 
 // #region [LOOP]
 loop(
@@ -25,6 +30,7 @@ loop(
 
     render_background(engine, game.current);
     render_platforms(engine, game.current);
+    render_particles(engine, game.current);
     render_player(engine, game.current);
     render_score(engine, game.current);
 
@@ -82,6 +88,7 @@ const handle_physics = (engine, game_buffer) => {
   var prev_player = game_buffer.prev.player;
 
   var platforms = current.platforms;
+  var particles = current.particles;
   var camera = current.camera;
   var physics = current.physics;
   var debug = current.debug;
@@ -168,6 +175,8 @@ const handle_physics = (engine, game_buffer) => {
             player.y_velocity = 12 + Math.min(difficilty / 10, 2);
             player.jumps_left = 1;
 
+            generate_platform_bounce_particles(current);
+
             break;
           }
         }
@@ -204,6 +213,28 @@ const handle_physics = (engine, game_buffer) => {
     if (platforms.length > 20) {
       platforms.splice(1, 1);
     }
+  }
+  // #endregion
+
+  // #region [PARTICLES]
+  var particles_length = particles.length;
+  for (var i = 0; i < particles_length; i++) {
+    const particle = particles[i];
+
+    if (particle.lifetime_left === 0) {
+      continue;
+    }
+
+    if (particle.lifetime_left - engine.delta > 0) {
+      particle.lifetime_left -= engine.delta;
+    } else {
+      particles.splice(i, 1);
+      particles_length--;
+    }
+  }
+
+  if (player.y_velocity > 6) {
+    generate_fly_player_particles(current);
   }
   // #endregion
 };

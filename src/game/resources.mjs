@@ -35,7 +35,7 @@ export const load_resources = async () => {
   sprites3.src = '/src/resources/sprites3.png';
 
   const background = new Image(1024, 1024);
-  background.src = '/src/resources/background.png';
+  background.src = '/src/resources/background2.png';
 
   Promise.all([/* await_image(sprites1), */ await_image(sprites2), await_image(sprites3), await_image(background)]);
 
@@ -53,7 +53,13 @@ export const load_resources = async () => {
         // ((x = 170), (y = 136), platform_sprites(x, y, x + (16 + 1) * 1, y, x + (16 + 1) * 2, y)),
         // ((x = 255), (y = 272), platform_sprites(x, y, x + (16 + 1) * 1, y, x + (16 + 1) * 2, y)),
       ],
-      digits: Array.from({ length: 10 }, (_, i) => ({ x: i * (8 + 1), y: 81, size: 8 })),
+      digits: Array.from({ length: 10 }, (_, i) => ({ x: i * (8 + 1), y: 72, size: 8 })),
+      particles: [
+        { x: 72, y: 54, size: 8 },
+        { x: 81, y: 54, size: 8 },
+        // { x: 63, y: 45, size: 8 },
+        { x: 63 + 18, y: 45 + 9, size: 8 },
+      ],
     },
   };
 };

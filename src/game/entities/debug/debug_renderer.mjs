@@ -34,6 +34,7 @@ export const render_debug = (engine, game) => {
   engine.ctx.fillText(`camera.y: ${game.camera.y.toFixed(2)}`, SIZE, ((_i += SIZE), _i));
   _i += SIZE;
   engine.ctx.fillText(`debug.platforms: ${game.platforms.length}`, SIZE, ((_i += SIZE), _i));
+  engine.ctx.fillText(`debug.particles: ${game.particles.length}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`debug.platforms_collisions: ${game.debug.platforms_collisions}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`debug.platforms_renders: ${game.debug.platforms_renders}`, SIZE, ((_i += SIZE), _i));
 };

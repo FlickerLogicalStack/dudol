@@ -36,6 +36,7 @@ export const handle_input = (engine, game) => {
     game.player.y = 250;
     game.player.x_velocity = 0;
     game.player.y_velocity = 0;
+    game.camera.y = game.camera.offset;
     game.progress.difficulty = 1;
     game.platforms.splice(1, game.platforms.length - 1);
   }

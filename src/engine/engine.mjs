@@ -64,6 +64,16 @@ export const loop = async (canvas, load_resources, game_state, on_frame) => {
 
   window.dispatchEvent(new Event('resize'));
 
+  const loop_context = {
+    engine,
+    game: {
+      current: game_state.create(engine),
+      prev: game_state.create(engine),
+    },
+    game_state,
+    on_frame,
+  };
+
   const outer_loop =
     /**
      * @this {{ engine: DUDOL.EngineContext<TResources>, game: { current: TGameState, prev: TGameState }, game_state: typeof game_state, on_frame: typeof on_frame }}
@@ -82,15 +92,10 @@ export const loop = async (canvas, load_resources, game_state, on_frame) => {
       game_state.copy(this.game.current, this.game.prev);
 
       this.engine.__raf = requestAnimationFrame(time => inner_loop.call(this, time));
-    }.bind({
-      engine,
-      game: {
-        current: game_state.create(engine),
-        prev: game_state.create(engine),
-      },
-      game_state,
-      on_frame,
-    });
+    }.bind(loop_context);
+
+  // @ts-expect-error
+  window.__ENGINE__ = { engine, game: loop_context.game.current };
 
   requestAnimationFrame(outer_loop);
 };

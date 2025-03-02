@@ -22,6 +22,7 @@ export const create_game_state = engine => {
   return {
     player: player,
     platforms: [floor],
+    particles: [],
     camera: camera,
     physics: physics,
     debug: debug,

@@ -18,6 +18,7 @@ declare global {
     export type GameState = {
       player: DUDOL.Entities.Player;
       platforms: DUDOL.Entities.Platform[];
+      particles: DUDOL.Entities.Particle[];
       camera: DUDOL.Entities.Camera;
       physics: DUDOL.Entities.Physics;
       debug: DUDOL.Entities.Debug;
@@ -60,6 +61,19 @@ declare global {
         move_from_y: number;
         move_to_x: number;
         move_to_y: number;
+      };
+
+      export type Particle = {
+        id: number;
+
+        type: number;
+
+        center_x: number;
+        center_y: number;
+        size: number;
+
+        lifetime: number;
+        lifetime_left: number;
       };
 
       export type Camera = {
