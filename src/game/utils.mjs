@@ -11,7 +11,7 @@ export const randrange = (min, max) => {
  * @param {number} value_from
  * @param {number} value_to
  */
-export function cubicBezier(t, value_from, value_to) {
+export function cubic_bezier(t, value_from, value_to) {
   const p1 = 0;
   const p2 = 1;
 

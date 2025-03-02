@@ -47,7 +47,7 @@ export const create_engine_context = (canvas, resources) => {
 export const loop = async (canvas, load_resources, game_state, on_frame) => {
   const __canvas = canvas();
 
-  const engine = create_engine_context(__canvas, /** @type {TResources} */ (await load_resources()));
+  const engine = create_engine_context(__canvas, await load_resources());
 
   engine.__prev_frame_time = performance.now();
 
