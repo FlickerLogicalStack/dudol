@@ -1,3 +1,5 @@
+import { render_debug_frame } from "../misc/render_debug_frame.mjs";
+
 /**
  * @param {DUDOL.EngineContext} engine
  * @param {DUDOL.GameState} game
@@ -9,7 +11,7 @@ export const render_platform = (engine, game, platform) => {
   engine.ctx.imageSmoothingEnabled = false;
 
   // const sprites_map = engine.resources.map.platforms[platform.id % engine.resources.map.platforms.length];
-  const sprites_map = engine.resources.map.platforms[platform.style];
+  const sprites_map = engine.resources.map.platforms[platform.type];
 
   const left = sprites_map[0];
   const center = sprites_map[1];
@@ -54,11 +56,7 @@ export const render_platform = (engine, game, platform) => {
   );
 
   if (game.debug.enabled === 1) {
-    engine.ctx.fillStyle = 'transparent';
-    engine.ctx.strokeStyle = 'green';
-    engine.ctx.lineWidth = 2;
-
-    engine.ctx.strokeRect(platform.x, local_y, platform.width, platform.height);
+    render_debug_frame(engine.ctx, platform.x, local_y, platform.width, platform.height);
 
     game.debug.platforms_renders++;
 

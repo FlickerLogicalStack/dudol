@@ -1,3 +1,5 @@
+import { render_debug_frame } from '../misc/render_debug_frame.mjs';
+
 /**
  * @param {DUDOL.EngineContext} engine
  * @param {DUDOL.GameState} game
@@ -39,10 +41,6 @@ export const render_player = (engine, game) => {
   }
 
   if (game.debug.enabled === 1) {
-    engine.ctx.fillStyle = 'transparent';
-    engine.ctx.strokeStyle = 'green';
-    engine.ctx.lineWidth = 2;
-
-    engine.ctx.strokeRect(render_x, render_y, game.player.width, game.player.height);
+    render_debug_frame(engine.ctx, render_x, render_y, game.player.width, game.player.height);
   }
 };

@@ -24,6 +24,7 @@ export const render_debug = (engine, game) => {
   engine.ctx.fillText(`player.y: ${game.player.y.toFixed(2)}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`player.y_velocity: ${game.player.y_velocity.toFixed(2)}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`player.jumps_left: ${game.player.jumps_left}`, SIZE, ((_i += SIZE), _i));
+  engine.ctx.fillText(`player.staying_on_platform: ${game.player.staying_on_platform}`, SIZE, ((_i += SIZE), _i));
   _i += SIZE;
   engine.ctx.fillText(`inputs: ${inputs}`, SIZE, ((_i += SIZE), _i));
   _i += SIZE;

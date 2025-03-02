@@ -5,7 +5,7 @@ import { randrange } from '../../utils.mjs';
 /**
  * @param {DUDOL.GameState} game
  */
-export const generate_platform_bounce_particles = game => {
+export const generate_platform_collision_particles = game => {
   const player = game.player;
 
   const particle_every_pixels = 10;

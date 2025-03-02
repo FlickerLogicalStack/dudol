@@ -10,14 +10,14 @@ import { create_progress } from './entities/progress/progress.mjs';
  * @returns {DUDOL.GameState}
  */
 export const create_game_state = engine => {
-  const player = create_player();
+  const player = create_player(engine);
   const camera = create_camera(player.y);
   const physics = create_physics();
   const debug = create_debug();
   const progress = create_progress();
 
   const floor = create_platform(0, 0, 0, engine.canvas.width);
-  floor.style = 2;
+  floor.type = 2;
 
   return {
     player: player,
@@ -27,6 +27,8 @@ export const create_game_state = engine => {
     physics: physics,
     debug: debug,
     progress: progress,
+
+    platforms_generator_enabled: 0,
   };
 };
 

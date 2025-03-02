@@ -1,15 +1,20 @@
 /**
+ * @param {DUDOL.EngineContext} engine
  * @returns {DUDOL.Entities.Player}
  */
-export const create_player = () => {
+export const create_player = engine => {
   const x_velocity = 0.0;
   const y_velocity = 0.0;
 
   const width = 50.0;
   const height = 50.0;
 
-  const x = 500.0 - width / 2;
-  const y = 250;
+  const default_x = engine.canvas.width / 2 - width / 2;
+  const default_y = 32;
+
+  const max_jumps = 1;
+  const jump_velocity_y = 12;
+  const bounce_velocity_y = 13;
 
   return {
     x_velocity,
@@ -18,10 +23,22 @@ export const create_player = () => {
     width,
     height,
 
-    x,
-    y,
+    x: default_x,
+    y: default_y,
 
-    jumps_left: 1,
+    jumps_left: max_jumps,
+
+    staying_on_platform: 0,
+
+    constant: {
+      default_x,
+      default_y,
+
+      max_jumps,
+
+      jump_velocity_y,
+      bounce_velocity_y,
+    },
   };
 };
 

@@ -2,7 +2,7 @@
  * @returns {DUDOL.Entities.Progress}
  */
 export const create_progress = () => ({
-  difficulty: 1,
+  difficulty: 0,
 });
 
 /**

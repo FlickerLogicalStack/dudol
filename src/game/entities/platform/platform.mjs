@@ -12,7 +12,7 @@ export const create_platform = (id, x, y, width) => ({
   width,
   height: 32,
 
-  style: 0,
+  type: 0,
 
   is_visible: false,
   is_in_x_borders: false,

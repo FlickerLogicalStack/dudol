@@ -13,7 +13,7 @@ import { render_score } from './entities/progress/score_renderer.mjs';
 import { render_particles } from './entities/particle/particle_renderer.mjs';
 import {
   generate_fly_player_particles,
-  generate_platform_bounce_particles,
+  generate_platform_collision_particles,
 } from './entities/particle/particle_generators.mjs';
 
 // #region [LOOP]
@@ -162,6 +162,17 @@ const handle_physics = (engine, game_buffer) => {
     for (const platform of platforms) {
       if (platform.is_visible) {
         if (platform.is_in_x_borders) {
+          if (platform.id === player.staying_on_platform) {
+            player.y = platform.y + platform.height;
+            player.y_velocity = 0;
+
+            if (player.x_velocity !== 0) {
+              generate_platform_collision_particles(current);
+            }
+
+            break;
+          }
+
           debug.platforms_collisions++;
 
           const platform_top = platform.y + platform.height;
@@ -172,10 +183,10 @@ const handle_physics = (engine, game_buffer) => {
 
           if (was_above_platform && is_in_platform_now) {
             player.y = platform_top;
-            player.y_velocity = 12 + Math.min(difficilty / 10, 2);
-            player.jumps_left = 1;
+            player.y_velocity = player.constant.bounce_velocity_y + Math.min(difficilty / 10, 2);
+            player.jumps_left = player.constant.max_jumps;
 
-            generate_platform_bounce_particles(current);
+            generate_platform_collision_particles(current);
 
             break;
           }
@@ -188,7 +199,7 @@ const handle_physics = (engine, game_buffer) => {
   // #region [COLLISION_BORDERS]
   if (player.y < 0) {
     player.y = 0;
-    player.y_velocity = -player.y_velocity;
+    player.y_velocity = -(player.y_velocity / 2);
   }
 
   if (player.x < 0) {
@@ -207,7 +218,7 @@ const handle_physics = (engine, game_buffer) => {
   // #endregion
 
   // #region [PLATFORM_GENERATOR]
-  if (is_new_platform_required(engine, current)) {
+  if (current.platforms_generator_enabled === 1 && is_new_platform_required(engine, current)) {
     generate_platform(engine, current);
 
     if (platforms.length > 20) {

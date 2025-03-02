@@ -23,6 +23,8 @@ declare global {
       physics: DUDOL.Entities.Physics;
       debug: DUDOL.Entities.Debug;
       progress: DUDOL.Entities.Progress;
+
+      platforms_generator_enabled: number;
     };
 
     export namespace Entities {
@@ -37,6 +39,18 @@ declare global {
         y_velocity: number;
 
         jumps_left: number;
+
+        staying_on_platform: number;
+
+        constant: {
+          default_x: number;
+          default_y: number;
+
+          max_jumps: number;
+
+          jump_velocity_y: number;
+          bounce_velocity_y: number;
+        };
       };
 
       export type Platform = {
@@ -48,7 +62,7 @@ declare global {
         width: number;
         height: number;
 
-        style: number;
+        type: number;
 
         is_visible: boolean;
         is_in_x_borders: boolean;
