@@ -177,17 +177,6 @@ const render_test = (engine, game) => {
 // #endregion
 
 // #region [RENDER_PLATFORM]
-// Example usage:
-// const P0 = { x: 0, y: 0 }; // Start point
-// const P1 = { x: 0.5, y: 1 }; // Control point 1
-// const P2 = { x: 0.5, y: 0 }; // Control point 2
-// const P3 = { x: 1, y: 1 }; // End point
-
-// const t = 0.5; // Parameter t between 0 and 1
-// const pointOnCurve = cubicBezier(t, P0, P1, P2, P3);
-
-// console.log(`Point on curve at t = ${t}:`, pointOnCurve);
-
 /**
  * @param {DUDOL.EngineContext} engine
  * @param {DUDOL.GameState} game
@@ -380,8 +369,12 @@ const handle_physics = (engine, game_context) => {
           game_context.current.debug.platforms_collisions++;
 
           const platform_top = platform.y + platform.height;
+          const platform_bottom = platform.y;
 
-          if (prev_player.y > platform_top && player.y < platform_top) {
+          const was_above_platform = prev_player.y > platform_top;
+          const is_in_platform_now = player.y > platform_bottom && player.y < platform_top;
+
+          if (was_above_platform && is_in_platform_now) {
             player.y = platform_top;
             player.y_velocity = 12 + Math.min(difficilty / 10, 2);
             player.jumps_left = 1;
