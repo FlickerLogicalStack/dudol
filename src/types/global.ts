@@ -6,7 +6,7 @@ declare global {
   export namespace DUDOL {
     export type Resources = Awaited<ReturnType<typeof import('../game/resources.mjs')['load_resources']>>;
 
-    export type EngineContext = ReturnType<typeof create_engine_context<Resources>>;
+    export type EngineContext<TResurces = Resources> = ReturnType<typeof create_engine_context<TResurces>>;
 
     export type GameState = ReturnType<typeof import('../game/game_context.mjs')['create_game_context']>;
     export type GameContext = {
