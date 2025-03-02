@@ -7,6 +7,7 @@ export const create_inputs = () => {
     Space: false,
     KeyD: false,
     IntlBackslash: false,
+    Digit1: false,
   };
 
   window.addEventListener(
@@ -30,6 +31,8 @@ export const create_inputs = () => {
         this.KeyD = true;
       } else if (event.code === 'IntlBackslash') {
         this.IntlBackslash = true;
+      } else if (event.code === 'Digit1') {
+        this.Digit1 = true;
       }
     }.bind(inputs)
   );
@@ -53,6 +56,8 @@ export const create_inputs = () => {
         this.Space = false;
       } else if (event.code === 'IntlBackslash') {
         this.IntlBackslash = false;
+      } else if (event.code === 'Digit1') {
+        this.Digit1 = false;
       }
     }.bind(inputs)
   );

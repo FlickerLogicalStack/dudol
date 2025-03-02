@@ -6,6 +6,11 @@
 export const render_debug = (engine, game) => {
   const SIZE = 16;
 
+  const inputs = Object.entries(engine.inputs)
+    .filter(entry => entry[1] === true)
+    .map(entry => entry[0])
+    .join(', ');
+
   engine.ctx.fillStyle = 'green';
   engine.ctx.font = `${SIZE}px monospace`;
 
@@ -19,6 +24,8 @@ export const render_debug = (engine, game) => {
   engine.ctx.fillText(`player.y: ${game.player.y.toFixed(2)}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`player.y_velocity: ${game.player.y_velocity.toFixed(2)}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`player.jumps_left: ${game.player.jumps_left}`, SIZE, ((_i += SIZE), _i));
+  _i += SIZE;
+  engine.ctx.fillText(`inputs: ${inputs}`, SIZE, ((_i += SIZE), _i));
   _i += SIZE;
   engine.ctx.fillText(`physics.gravity: ${game.physics.gravity}`, SIZE, ((_i += SIZE), _i));
   _i += SIZE;

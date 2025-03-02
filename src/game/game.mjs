@@ -1,14 +1,15 @@
 import { create_game_state, copy_game_state } from './game_state.mjs';
 import { cubic_bezier } from './utils.mjs';
 import { generate_platform, is_new_platform_required } from './entities/platform/platform_generator.mjs';
+import { handle_input } from './game_inputs.mjs';
 import { is_platform_visible } from './entities/platform/platform_helpers.mjs';
 import { load_resources } from './resources.mjs';
 import { loop } from '../engine/engine.mjs';
+import { render_background } from './entities/misc/render_background.mjs';
 import { render_debug } from './entities/debug/debug_renderer.mjs';
 import { render_platform } from './entities/platform/platform_renderer.mjs';
 import { render_player } from './entities/player/player_renderer.mjs';
 import { render_score } from './entities/progress/score_renderer.mjs';
-import { render_background } from './entities/misc/render_background.mjs';
 
 // #region [LOOP]
 loop(
@@ -32,40 +33,6 @@ loop(
     }
   }
 );
-// #endregion
-
-// #region [HANDLE_INPUT]
-/**
- * @param {DUDOL.EngineContext} engine
- * @param {DUDOL.GameState} game
- */
-const handle_input = (engine, game) => {
-  if (engine.inputs.IntlBackslash === true) {
-    game.physics.gravity = 0;
-    game.player.y_velocity = 0;
-  } else {
-    game.physics.gravity = 1;
-  }
-
-  if (engine.inputs.Space === true) {
-    if (game.player.jumps_left > 0) {
-      game.player.jumps_left -= 1;
-      game.player.y_velocity = 12;
-
-      engine.inputs.Space = false;
-    }
-  }
-
-  if (engine.inputs.ArrowUp === true) game.player.y_velocity += 50 * engine.delta_mul;
-  if (engine.inputs.ArrowDown === true) game.player.y_velocity -= 50 * engine.delta_mul;
-  if (engine.inputs.ArrowRight === true) game.player.x_velocity += 100 * engine.delta_mul;
-  if (engine.inputs.ArrowLeft === true) game.player.x_velocity -= 100 * engine.delta_mul;
-
-  if (engine.inputs.KeyD === true) {
-    game.debug.enabled = game.debug.enabled === 1 ? 0 : 1;
-    engine.inputs.KeyD = false;
-  }
-};
 // #endregion
 
 // #region [RENDER_TEST]
@@ -151,7 +118,6 @@ const handle_physics = (engine, game_buffer) => {
   // #endregion
 
   // #region [PLATFORM_MOVE]
-
   for (const platform of platforms) {
     if (platform.moving === 1 && platform.moving_duration > 0) {
       platform.moving_current += engine.delta * platform.moving_direction;
