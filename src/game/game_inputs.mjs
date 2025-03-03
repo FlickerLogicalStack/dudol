@@ -72,6 +72,6 @@ export const handle_input = (engine, game) => {
     game.progress.difficulty = 0;
 
     game.platforms_generator_enabled = 0;
-    game.platforms.splice(1, game.platforms.length - 1);
+    game.platforms.length = 1;
   }
 };

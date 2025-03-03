@@ -33,7 +33,7 @@ export const process_platform_animations = (engine, game) => {
         }
       }
 
-      animation.apply.call(platform, animation);
+      animation.apply.call(platform, animation, game);
 
       game.debug.platform_animations++;
     }

@@ -39,4 +39,5 @@ export const render_debug = (engine, game) => {
   engine.ctx.fillText(`debug.platforms_collisions: ${game.debug.platforms_collisions}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`debug.platforms_renders: ${game.debug.platforms_renders}`, SIZE, ((_i += SIZE), _i));
   engine.ctx.fillText(`debug.platform_animations: ${game.debug.platform_animations}`, SIZE, ((_i += SIZE), _i));
+  engine.ctx.fillText(`debug.enemy_animations: ${game.debug.enemy_animations}`, SIZE, ((_i += SIZE), _i));
 };

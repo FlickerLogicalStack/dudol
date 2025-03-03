@@ -5,7 +5,9 @@ export const create_debug = () => ({
   enabled: 0,
   platforms_collisions: 0,
   platforms_renders: 0,
+
   platform_animations: 0,
+  enemy_animations: 0,
 });
 
 /**

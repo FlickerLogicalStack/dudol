@@ -20,8 +20,11 @@ export const create_game_state = engine => {
 
   return {
     player: player,
+
     platforms: [floor],
     particles: [],
+    enemies: [],
+
     camera: camera,
     physics: physics,
     debug: debug,

@@ -4,17 +4,19 @@ import { handle_input } from './game_inputs.mjs';
 import { is_platform_visible } from './entities/platform/platform_helpers.mjs';
 import { load_resources } from './resources.mjs';
 import { loop } from '../engine/engine.mjs';
+import { process_enemy_animations } from './entities/enemy/enemy_animation.mjs';
+import { process_platform_animations } from './entities/platform/platform_animations.mjs';
 import { render_background } from './entities/misc/render_background.mjs';
 import { render_debug } from './entities/debug/debug_renderer.mjs';
+import { render_enemy } from './entities/enemy/enemy_renderer.mjs';
+import { render_particles } from './entities/particle/particle_renderer.mjs';
 import { render_platform } from './entities/platform/platform_renderer.mjs';
 import { render_player } from './entities/player/player_renderer.mjs';
 import { render_score } from './entities/progress/score_renderer.mjs';
-import { render_particles } from './entities/particle/particle_renderer.mjs';
 import {
   generate_fly_player_particles,
   generate_platform_collision_particles,
 } from './entities/particle/particle_generators.mjs';
-import { process_platform_animations } from './entities/platform/platform_animations.mjs';
 
 // #region [LOOP]
 loop(
@@ -36,6 +38,7 @@ loop(
     render_platforms(engine, game.current);
     render_particles(engine, game.current);
     render_player(engine, game.current);
+    render_enemy(engine, game.current);
     render_score(engine, game.current);
 
     if (game.current.debug.enabled === 1) {
@@ -108,6 +111,8 @@ function handle_gameplay(engine, game_buffer) {
 
   var platforms = current.platforms;
   var particles = current.particles;
+  var enemies = current.enemies;
+
   var camera = current.camera;
   var physics = current.physics;
   var debug = current.debug;
@@ -143,8 +148,23 @@ function handle_gameplay(engine, game_buffer) {
   player.y += player.y_velocity * 100 * engine.delta_mul;
   // #endregion
 
+  // #region [ENEMIES_AI]
+  for (var enemy of enemies) {
+    if (enemy.alive === 1) {
+      const diff_x = (player.x + player.width / 2 - enemy.base_x) / 2;
+      const diff_y = (player.y + player.width / 2 - enemy.base_y) / 2;
+
+      if (Math.abs(diff_x) < 200 && Math.abs(diff_y) < 200) {
+        enemy.base_x += diff_x * engine.delta_mul;
+        enemy.base_y += diff_y * engine.delta_mul;
+      }
+    }
+  }
+  // #endregion
+
   // #region [ANIMATIONS]
   process_platform_animations(engine, current);
+  process_enemy_animations(engine, current);
   // #endregion
 
   // #region [COLLISION_PLATFORMS]

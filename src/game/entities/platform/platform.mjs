@@ -18,7 +18,7 @@ export const create_platform = (id, x, y, width) => ({
   is_visible: false,
   is_in_x_borders: false,
 
-  opacity: 1,
+  opacity: 1.0,
 
   animations: [],
 });

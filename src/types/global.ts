@@ -17,8 +17,11 @@ declare global {
 
     export type GameState = {
       player: DUDOL.Entities.Player;
+
       platforms: DUDOL.Entities.Platform[];
       particles: DUDOL.Entities.Particle[];
+      enemies: DUDOL.Entities.Enemy[];
+
       camera: DUDOL.Entities.Camera;
       physics: DUDOL.Entities.Physics;
       debug: DUDOL.Entities.Debug;
@@ -38,7 +41,7 @@ declare global {
         duration: number;
         current: number;
 
-        apply: (this: T, animation: DUDOL.Entities.Animation<T>) => void;
+        apply: (this: T, animation: DUDOL.Entities.Animation<T>, game: DUDOL.GameState) => void;
       };
 
       export type Player = {
@@ -78,12 +81,34 @@ declare global {
         moving: number;
         once: number;
 
-        is_visible: boolean;
         is_in_x_borders: boolean;
 
+        is_visible: boolean;
         opacity: number;
 
         animations: Animation<Platform>[];
+      };
+
+      export type Enemy = {
+        id: number;
+
+        base_x: number;
+        base_y: number;
+
+        x: number;
+        y: number;
+
+        width: number;
+        height: number;
+
+        alive: number;
+
+        is_visible: boolean;
+        opacity: number;
+
+        sprite: number;
+
+        animations: Animation<Enemy>[];
       };
 
       export type Particle = {
@@ -112,7 +137,9 @@ declare global {
         enabled: number;
         platforms_collisions: number;
         platforms_renders: number;
+
         platform_animations: number;
+        enemy_animations: number;
       };
 
       export type Progress = {

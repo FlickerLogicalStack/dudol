@@ -1,4 +1,11 @@
 /**
+ * @param {number} x
+ * @param {number} y
+ * @param {number} size
+ */
+const sprite = (x, y, size) => ({ x, y, size });
+
+/**
  * @param {HTMLImageElement} image
  */
 const await_image = image =>
@@ -15,11 +22,7 @@ const await_image = image =>
  * @param {number} right_y
  */
 const platform_sprites = (left_x, left_y, center_x, center_y, right_x, right_y) => {
-  return [
-    { x: left_x, y: left_y, size: 8 },
-    { x: center_x, y: center_y, size: 8 },
-    { x: right_x, y: right_y, size: 8 },
-  ];
+  return [sprite(left_x, left_y, 8), sprite(center_x, center_y, 8), sprite(right_x, right_y, 8)];
 };
 
 export const load_resources = async () => {
@@ -51,10 +54,16 @@ export const load_resources = async () => {
         ((x = 90), (y = 27), platform_sprites(x, y, x + (8 + 1) * 1, y, x + (8 + 1) * 2, y)),
         ((x = 27), (y = 18), platform_sprites(x, y, x + (8 + 1) * 1, y, x + (8 + 1) * 2, y)),
       ],
-      digits: Array.from({ length: 10 }, (_, i) => ({ x: i * (8 + 1), y: 72, size: 8 })),
+      digits: Array.from({ length: 10 }, (_, i) => sprite(i * (8 + 1), 72, 8)),
       particles: [
-        { x: 72, y: 54, size: 8 },
-        { x: 81, y: 54, size: 8 },
+        //
+        sprite(72, 54, 8),
+        sprite(81, 54, 8),
+      ],
+      enemies: [
+        //
+        sprite(63, 63, 8),
+        sprite(72, 63, 8),
       ],
     },
   };
