@@ -28,6 +28,19 @@ declare global {
     };
 
     export namespace Entities {
+      export type Animation<T> = {
+        from: number;
+        to: number;
+
+        cycled: boolean;
+        speed: number;
+
+        duration: number;
+        current: number;
+
+        apply: (this: T, animation: DUDOL.Entities.Animation<T>) => void;
+      };
+
       export type Player = {
         x: number;
         y: number;
@@ -67,14 +80,9 @@ declare global {
         is_visible: boolean;
         is_in_x_borders: boolean;
 
-        moving: number;
-        moving_direction: number;
-        moving_duration: number;
-        moving_current: number;
-        move_from_x: number;
-        move_from_y: number;
-        move_to_x: number;
-        move_to_y: number;
+        opacity: number;
+
+        animations: Animation<Platform>[];
       };
 
       export type Particle = {
@@ -103,6 +111,7 @@ declare global {
         enabled: number;
         platforms_collisions: number;
         platforms_renders: number;
+        platform_animations: number;
       };
 
       export type Progress = {

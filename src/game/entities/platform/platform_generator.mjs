@@ -1,5 +1,7 @@
 import { randrange } from '../../utils.mjs';
+import { create_animation } from '../animation/animation.mjs';
 import { create_platform } from './platform.mjs';
+import { platform_animation_opacity, platform_animation_x, platform_animation_y } from './platform_animations.mjs';
 
 /**
  * @param {DUDOL.EngineContext} engine
@@ -25,19 +27,25 @@ export const generate_platform = (engine, game) => {
     192
   );
 
+  if (new_platform.y < 2000) {
+    new_platform.opacity = 0;
+    const opacity_animation = create_animation(0, 1, 1000, platform_animation_opacity);
+
+    opacity_animation.cycled = false;
+
+    new_platform.animations.push(opacity_animation);
+  }
+
   if (Math.random() > 1 - game.progress.difficulty / 100) {
     new_platform.type = 1;
 
-    new_platform.moving = 1;
-    new_platform.moving_duration = randrange(100, 2000);
-    new_platform.move_from_x = new_platform.x;
-    new_platform.move_from_y = new_platform.y;
+    const duration = randrange(100, 2000);
 
-    new_platform.move_to_x = new_platform.x + randrange(-200, 200);
-    new_platform.move_to_y = new_platform.y + randrange(-200, 200);
+    new_platform.animations.push(
+      create_animation(new_platform.x, new_platform.x + randrange(-200, 200), duration, platform_animation_x),
+      create_animation(new_platform.y, new_platform.y + randrange(-200, 200), duration, platform_animation_y)
+    );
   }
-
-  console.log(new_platform);
 
   game.platforms.push(new_platform);
 };

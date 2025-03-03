@@ -2,9 +2,10 @@
  * @returns {DUDOL.Entities.Debug}
  */
 export const create_debug = () => ({
-  enabled: 1,
+  enabled: 0,
   platforms_collisions: 0,
   platforms_renders: 0,
+  platform_animations: 0,
 });
 
 /**

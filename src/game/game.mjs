@@ -1,5 +1,4 @@
 import { create_game_state, copy_game_state } from './game_state.mjs';
-import { cubic_bezier } from './utils.mjs';
 import { generate_platform, is_new_platform_required } from './entities/platform/platform_generator.mjs';
 import { handle_input } from './game_inputs.mjs';
 import { is_platform_visible } from './entities/platform/platform_helpers.mjs';
@@ -15,6 +14,7 @@ import {
   generate_fly_player_particles,
   generate_platform_collision_particles,
 } from './entities/particle/particle_generators.mjs';
+import { process_platform_animations } from './entities/platform/platform_animations.mjs';
 
 // #region [LOOP]
 loop(
@@ -22,9 +22,13 @@ loop(
   load_resources,
   { create: create_game_state, copy: copy_game_state },
   function on_frame(engine, game) {
+    if (engine.frame === 1) {
+      handle_frame_1(engine, game.current);
+    }
+
     handle_input(engine, game.current);
 
-    handle_physics(engine, game);
+    handle_gameplay(engine, game);
 
     render_test(engine, game.current);
 
@@ -39,6 +43,17 @@ loop(
     }
   }
 );
+// #endregion
+
+// #region [FRAME 1]
+/**
+ * @param {DUDOL.EngineContext} engine
+ * @param {DUDOL.GameState} game
+ */
+const handle_frame_1 = (engine, game) => {
+  engine;
+  game;
+};
 // #endregion
 
 // #region [RENDER_TEST]
@@ -81,7 +96,7 @@ const render_platforms = (engine, game) => {
  * @param {DUDOL.EngineContext} engine
  * @param {DUDOL.GameBuffer} game_buffer
  */
-const handle_physics = (engine, game_buffer) => {
+function handle_gameplay(engine, game_buffer) {
   var current = game_buffer.current;
 
   var player = current.player;
@@ -124,29 +139,8 @@ const handle_physics = (engine, game_buffer) => {
   player.y += player.y_velocity * 100 * engine.delta_mul;
   // #endregion
 
-  // #region [PLATFORM_MOVE]
-  for (const platform of platforms) {
-    if (platform.moving === 1 && platform.moving_duration > 0) {
-      platform.moving_current += engine.delta * platform.moving_direction;
-
-      if (platform.moving_current > platform.moving_duration) {
-        platform.moving_current = platform.moving_duration;
-        platform.moving_direction = -platform.moving_direction;
-      } else if (platform.moving_current < 0) {
-        platform.moving_current = 0;
-        platform.moving_direction = -platform.moving_direction;
-      }
-
-      const perc = platform.moving_current / platform.moving_duration;
-
-      const moving_x = cubic_bezier(perc, platform.move_from_x, platform.move_to_x);
-      const moving_y = cubic_bezier(perc, platform.move_from_y, platform.move_to_y);
-
-      platform.x = moving_x;
-      platform.y = moving_y;
-    }
-  }
-
+  // #region [ANIMATIONS]
+  process_platform_animations(engine, current);
   // #endregion
 
   // #region [COLLISION_PLATFORMS]
@@ -248,4 +242,4 @@ const handle_physics = (engine, game_buffer) => {
     generate_fly_player_particles(current);
   }
   // #endregion
-};
+}

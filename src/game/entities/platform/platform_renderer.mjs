@@ -1,4 +1,4 @@
-import { render_debug_frame } from "../misc/render_debug_frame.mjs";
+import { render_debug_frame } from '../misc/render_debug_frame.mjs';
 
 /**
  * @param {DUDOL.EngineContext} engine
@@ -7,6 +7,10 @@ import { render_debug_frame } from "../misc/render_debug_frame.mjs";
  */
 export const render_platform = (engine, game, platform) => {
   const local_y = engine.canvas.height - platform.y - platform.height + (game.camera.y - game.camera.offset);
+
+  if (platform.opacity !== 1) {
+    engine.ctx.globalAlpha = platform.opacity;
+  }
 
   engine.ctx.imageSmoothingEnabled = false;
 
@@ -54,6 +58,8 @@ export const render_platform = (engine, game, platform) => {
     platform.height + 1,
     platform.height
   );
+
+  engine.ctx.globalAlpha = 1;
 
   if (game.debug.enabled === 1) {
     render_debug_frame(engine.ctx, platform.x, local_y, platform.width, platform.height);

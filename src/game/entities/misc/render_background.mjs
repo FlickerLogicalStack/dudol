@@ -31,7 +31,7 @@ export const render_background = (engine, game) => {
   // gradient.addColorStop(0, 'black');
   // gradient.addColorStop(1, '#d6edf7');
 
-  engine.ctx.fillStyle = '#d6edf7';
+  engine.ctx.fillStyle = '#cfeffc';
   // engine.ctx.fillStyle = gradient;
   engine.ctx.fillRect(0, 0, engine.canvas.width, image_breakpoint + 1);
 
