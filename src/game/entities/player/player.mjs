@@ -13,8 +13,8 @@ export const create_player = engine => {
   const default_y = 32;
 
   const max_jumps = 1;
-  const jump_velocity_y = 12;
-  const bounce_velocity_y = 13;
+  const jump_velocity_y = 20;
+  const bounce_velocity_y = 20;
 
   return {
     x_velocity,

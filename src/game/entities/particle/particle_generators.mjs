@@ -1,6 +1,6 @@
 import { spawn_particle } from './particle_spawner.mjs';
 import { create_particle } from './particle.mjs';
-import { randrange } from '../../utils.mjs';
+import { rand_spread } from '../../utils.mjs';
 
 /**
  * @param {DUDOL.GameState} game
@@ -18,11 +18,11 @@ export const generate_platform_collision_particles = game => {
     spawn_particle(
       game,
       create_particle(
-        player.x + player_width / 2 - (i * 10 - player_width_half) + randrange(-5, 5),
-        player.y + randrange(-5, 5),
+        player.x + player_width / 2 - (i * 10 - player_width_half) + rand_spread(5),
+        player.y + rand_spread(5),
         32,
         0,
-        100 + randrange(-50, 50)
+        100 + rand_spread(50)
       )
     );
   }
@@ -36,12 +36,6 @@ export const generate_fly_player_particles = game => {
 
   spawn_particle(
     game,
-    create_particle(
-      player.x + player.width / 2 + randrange(-16, 16),
-      player.y + player.height / 2 + randrange(-16, 16),
-      32,
-      1,
-      200
-    )
+    create_particle(player.x + player.width / 2 + rand_spread(16), player.y + rand_spread(16), 32, 1, 200)
   );
 };

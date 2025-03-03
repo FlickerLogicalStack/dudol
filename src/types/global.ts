@@ -75,7 +75,8 @@ declare global {
         width: number;
         height: number;
 
-        type: number;
+        moving: number;
+        once: number;
 
         is_visible: boolean;
         is_in_x_borders: boolean;

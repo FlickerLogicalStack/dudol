@@ -14,8 +14,7 @@ export const render_platform = (engine, game, platform) => {
 
   engine.ctx.imageSmoothingEnabled = false;
 
-  // const sprites_map = engine.resources.map.platforms[platform.id % engine.resources.map.platforms.length];
-  const sprites_map = engine.resources.map.platforms[platform.type];
+  const sprites_map = engine.resources.map.platforms[platform.moving ? 1 : 0];
 
   const left = sprites_map[0];
   const center = sprites_map[1];

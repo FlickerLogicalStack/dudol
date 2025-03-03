@@ -20,7 +20,7 @@ export const render_background = (engine, game) => {
     offsetY = (engine.canvas.height - drawHeight) / 2;
   }
 
-  const image_breakpoint = offsetY + game.camera.y / 200;
+  const image_breakpoint = offsetY + game.camera.y / 10;
 
   // const gradient = engine.ctx.createLinearGradient(
   //   0,

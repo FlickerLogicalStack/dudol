@@ -1,4 +1,4 @@
-import { randrange } from '../../utils.mjs';
+import { rand_range, rand_spread, with_possibility } from '../../utils.mjs';
 import { create_animation } from '../animation/animation.mjs';
 import { create_platform } from './platform.mjs';
 import { platform_animation_opacity, platform_animation_x, platform_animation_y } from './platform_animations.mjs';
@@ -22,8 +22,8 @@ export const generate_platform = (engine, game) => {
 
   const new_platform = create_platform(
     last_platform.id + 1,
-    Math.round(randrange(0, engine.canvas.width - 192)),
-    Math.round(last_platform.y + 200 + game.progress.difficulty + randrange(0, 200)),
+    Math.round(rand_range(0, engine.canvas.width - 192)),
+    Math.round(last_platform.y + 200 + game.progress.difficulty + rand_range(0, 200)),
     192
   );
 
@@ -36,14 +36,14 @@ export const generate_platform = (engine, game) => {
     new_platform.animations.push(opacity_animation);
   }
 
-  if (Math.random() > 1 - game.progress.difficulty / 100) {
-    new_platform.type = 1;
+  if (with_possibility(Math.min(game.progress.difficulty, 50))) {
+    new_platform.moving = 1;
 
-    const duration = randrange(100, 2000);
+    const duration = rand_range(500, 2000);
 
     new_platform.animations.push(
-      create_animation(new_platform.x, new_platform.x + randrange(-200, 200), duration, platform_animation_x),
-      create_animation(new_platform.y, new_platform.y + randrange(-200, 200), duration, platform_animation_y)
+      create_animation(new_platform.x, new_platform.x + rand_spread(200), duration, platform_animation_x),
+      create_animation(new_platform.y, new_platform.y + rand_spread(200), duration, platform_animation_y)
     );
   }
 

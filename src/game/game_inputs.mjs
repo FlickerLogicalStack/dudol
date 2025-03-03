@@ -17,6 +17,7 @@ export const handle_input = (engine, game) => {
       game.platforms_generator_enabled = 1;
       game.player.staying_on_platform = -1;
       game.player.y_velocity = 30;
+      game.player.jumps_left -= 1;
     } else if (game.player.jumps_left > 0) {
       game.player.jumps_left -= 1;
       game.player.y_velocity = game.player.constant.jump_velocity_y;

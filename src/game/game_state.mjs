@@ -17,7 +17,6 @@ export const create_game_state = engine => {
   const progress = create_progress();
 
   const floor = create_platform(0, 0, 0, engine.canvas.width);
-  floor.type = 2;
 
   return {
     player: player,

@@ -83,7 +83,11 @@ const render_platforms = (engine, game) => {
   for (let i = 0; i < count; i++) {
     const platform = game.platforms[i];
 
-    if (!platform.is_visible) {
+    if (platform.is_visible === false) {
+      continue;
+    }
+
+    if (platform.opacity === 0) {
       continue;
     }
 
@@ -121,7 +125,7 @@ function handle_gameplay(engine, game_buffer) {
 
   // #region [GRAVITY]
   if (player.y > 1 && physics.gravity === 1) {
-    player.y_velocity -= 10 * 2 * engine.delta_mul;
+    player.y_velocity -= 10 * 4 * engine.delta_mul;
   }
   // #endregion
 

@@ -50,15 +50,11 @@ export const load_resources = async () => {
         ((x = 27), (y = 27), platform_sprites(x, y, x + (8 + 1) * 1, y, x + (8 + 1) * 2, y)),
         ((x = 90), (y = 27), platform_sprites(x, y, x + (8 + 1) * 1, y, x + (8 + 1) * 2, y)),
         ((x = 27), (y = 18), platform_sprites(x, y, x + (8 + 1) * 1, y, x + (8 + 1) * 2, y)),
-        // ((x = 170), (y = 136), platform_sprites(x, y, x + (16 + 1) * 1, y, x + (16 + 1) * 2, y)),
-        // ((x = 255), (y = 272), platform_sprites(x, y, x + (16 + 1) * 1, y, x + (16 + 1) * 2, y)),
       ],
       digits: Array.from({ length: 10 }, (_, i) => ({ x: i * (8 + 1), y: 72, size: 8 })),
       particles: [
         { x: 72, y: 54, size: 8 },
         { x: 81, y: 54, size: 8 },
-        // { x: 63, y: 45, size: 8 },
-        { x: 63 + 18, y: 45 + 9, size: 8 },
       ],
     },
   };
