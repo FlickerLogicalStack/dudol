@@ -1,3 +1,5 @@
+import { BACKGROUND, SPRITE_2_B64 } from './resources_base64.mjs';
+
 /**
  * @param {number} x
  * @param {number} y
@@ -32,20 +34,23 @@ export const load_resources = async () => {
   // sprites1.src = '/src/resources/sprites1.png';
 
   const sprites2 = new Image(133, 88);
-  sprites2.src = '/src/resources/sprites2.png';
+  sprites2.src = SPRITE_2_B64;
 
-  const sprites3 = new Image(338, 338);
-  sprites3.src = '/src/resources/sprites3.png';
+  // const sprites3 = new Image(338, 338);
+  // sprites3.src = '/src/resources/sprites3.png';
 
   const background = new Image(1024, 1024);
-  background.src = '/src/resources/background2.png';
+  background.src = BACKGROUND;
 
-  Promise.all([/* await_image(sprites1), */ await_image(sprites2), await_image(sprites3), await_image(background)]);
+  Promise.all([
+    /* await_image(sprites1), */ await_image(sprites2),
+    /* await_image(sprites3),  */ await_image(background),
+  ]);
 
   return {
     // sprites1,
     sprites2,
-    sprites3,
+    // sprites3,
     background,
 
     map: {
