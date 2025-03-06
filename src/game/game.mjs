@@ -1,10 +1,17 @@
+import {
+  generate_fly_player_particles,
+  generate_collision_particles,
+  generate_enemy_dead_particles,
+} from './entities/particle/particle_generators.mjs';
+import { create_animation } from './entities/animation/animation.mjs';
 import { create_game_state, copy_game_state } from './game_state.mjs';
+import { enemy_animation_dead, process_enemy_animations } from './entities/enemy/enemy_animation.mjs';
 import { generate_platform, is_new_platform_required } from './entities/platform/platform_generator.mjs';
 import { handle_input } from './game_inputs.mjs';
 import { is_platform_visible } from './entities/platform/platform_helpers.mjs';
+import { is_player_bounce_on_enemy, is_player_bounce_on_platform } from './entities/player/player_collision.mjs';
 import { load_resources } from './resources.mjs';
 import { loop } from '../engine/engine.mjs';
-import { process_enemy_animations } from './entities/enemy/enemy_animation.mjs';
 import { process_platform_animations } from './entities/platform/platform_animations.mjs';
 import { render_background } from './entities/misc/render_background.mjs';
 import { render_debug } from './entities/debug/debug_renderer.mjs';
@@ -13,10 +20,6 @@ import { render_particles } from './entities/particle/particle_renderer.mjs';
 import { render_platform } from './entities/platform/platform_renderer.mjs';
 import { render_player } from './entities/player/player_renderer.mjs';
 import { render_score } from './entities/progress/score_renderer.mjs';
-import {
-  generate_fly_player_particles,
-  generate_platform_collision_particles,
-} from './entities/particle/particle_generators.mjs';
 
 // #region [LOOP]
 loop(
@@ -24,13 +27,13 @@ loop(
   load_resources,
   { create: create_game_state, copy: copy_game_state },
   function on_frame(engine, game) {
-    if (engine.frame === 1) {
-      handle_frame_1(engine, game.current);
-    }
-
     handle_input(engine, game.current);
 
     handle_gameplay(engine, game);
+
+    if (engine.frame === 1) {
+      handle_frame_1(engine, game.current);
+    }
 
     render_test(engine, game.current);
 
@@ -107,7 +110,6 @@ function handle_gameplay(engine, game_buffer) {
   var current = game_buffer.current;
 
   var player = current.player;
-  var prev_player = game_buffer.prev.player;
 
   var platforms = current.platforms;
   var particles = current.particles;
@@ -136,10 +138,10 @@ function handle_gameplay(engine, game_buffer) {
 
   // #region [INERTIA]
   const x_velocity_abs = Math.abs(player.x_velocity);
-  if (x_velocity_abs > 0 && x_velocity_abs <= 0.5) {
+  if (x_velocity_abs > 0 && x_velocity_abs < 0.2) {
     player.x_velocity = 0;
   } else {
-    player.x_velocity += -(Math.sign(player.x_velocity) / 2);
+    player.x_velocity -= Math.sign(player.x_velocity) / 3;
   }
   // #endregion
 
@@ -167,47 +169,71 @@ function handle_gameplay(engine, game_buffer) {
   process_enemy_animations(engine, current);
   // #endregion
 
+  // #region [COLLISIONS_ENEMIES]
+  const enemies_count = enemies.length;
+  if (player.y_velocity < 0) {
+    for (var i = 0; i < enemies_count; i++) {
+      var enemy = enemies[i];
+
+      var current_intersection = is_player_bounce_on_enemy(game_buffer, i);
+
+      if (current_intersection) {
+        player.y = enemy.y + enemy.height;
+        player.y_velocity = player.constant.bounce_velocity_y / 2 + Math.min(difficilty / 10, 2);
+        player.jumps_left = player.constant.max_jumps;
+
+        const dead_animation = create_animation(enemy.base_y, enemy.base_y - 200, 200, enemy_animation_dead);
+        dead_animation.cycled = false;
+        enemy.animations.push(dead_animation);
+
+        generate_collision_particles(current);
+
+        break;
+      }
+    }
+  }
+  // #endregion
+
   // #region [COLLISION_PLATFORMS]
   for (const platform of platforms) {
-    const is_in_x_borders = player.x + player.width > platform.x && player.x < platform.x + platform.width;
-
-    platform.is_in_x_borders = is_in_x_borders;
     platform.is_visible = is_platform_visible(engine, current, platform);
   }
 
   debug.platforms_collisions = 0;
+  const platforms_count = platforms.length;
+
   if (player.y_velocity < 0) {
-    for (const platform of platforms) {
-      if (platform.is_visible) {
-        if (platform.is_in_x_borders) {
-          if (platform.id === player.staying_on_platform) {
-            player.y = platform.y + platform.height;
-            player.y_velocity = 0;
+    for (var i = 0; i < platforms_count; i++) {
+      var platform = platforms[i];
 
-            if (player.x_velocity !== 0) {
-              generate_platform_collision_particles(current);
-            }
+      if (platform.is_visible === false) {
+        continue;
+      }
 
-            break;
+      if (player.y + player.height > platform.y + platform.height) {
+        if (platform.id === player.staying_on_platform) {
+          player.y = platform.y + platform.height;
+          player.y_velocity = 0;
+
+          if (player.x_velocity !== 0) {
+            generate_collision_particles(current);
           }
 
-          debug.platforms_collisions++;
+          break;
+        }
 
-          const platform_top = platform.y + platform.height;
-          const platform_bottom = platform.y;
+        debug.platforms_collisions++;
 
-          const was_above_platform = prev_player.y > platform_top;
-          const is_in_platform_now = player.y > platform_bottom && player.y < platform_top;
+        var current_intersection = is_player_bounce_on_platform(game_buffer, i);
 
-          if (was_above_platform && is_in_platform_now) {
-            player.y = platform_top;
-            player.y_velocity = player.constant.bounce_velocity_y + Math.min(difficilty / 10, 2);
-            player.jumps_left = player.constant.max_jumps;
+        if (current_intersection) {
+          player.y = platform.y + platform.height;
+          player.y_velocity = player.constant.bounce_velocity_y + Math.min(difficilty / 10, 2);
+          player.jumps_left = player.constant.max_jumps;
 
-            generate_platform_collision_particles(current);
+          generate_collision_particles(current);
 
-            break;
-          }
+          break;
         }
       }
     }
@@ -245,6 +271,16 @@ function handle_gameplay(engine, game_buffer) {
   }
   // #endregion
 
+  // #region [ENEMY_GENERATOR]
+  // if (current.enemies_generator_enabled === 1) {
+  //   generate_enemy(engine, current);
+
+  //   if (enemies.length > 20) {
+  //     enemies.splice(0, 1);
+  //   }
+  // }
+  // #endregion
+
   // #region [PARTICLES]
   var particles_length = particles.length;
   for (var i = 0; i < particles_length; i++) {
@@ -264,6 +300,20 @@ function handle_gameplay(engine, game_buffer) {
 
   if (player.y_velocity > 6) {
     generate_fly_player_particles(current);
+  }
+  // #endregion
+
+  // #region [ENEMIES]
+  var particles_length = enemies.length;
+  for (var i = 0; i < particles_length; i++) {
+    const enemy = enemies[i];
+
+    if (enemy.alive === 0) {
+      enemies.splice(i, 1);
+      particles_length--;
+    } else if (enemy.is_dying === 1) {
+      generate_enemy_dead_particles(current, enemy);
+    }
   }
   // #endregion
 }

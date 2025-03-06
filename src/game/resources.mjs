@@ -59,6 +59,8 @@ export const load_resources = async () => {
         //
         sprite(72, 54, 8),
         sprite(81, 54, 8),
+        sprite(45, 63, 8),
+        sprite(54, 63, 8),
       ],
       enemies: [
         //

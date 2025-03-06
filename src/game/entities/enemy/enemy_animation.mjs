@@ -64,11 +64,14 @@ export const enemy_animation_dead = /** @type {DUDOL.Entities.Animation<DUDOL.En
   function (animation) {
     const animation_perc = animation.current / animation.duration;
 
+    this.is_dying = 1;
+
     this.base_y = cubic_bezier(animation_perc, animation.from, animation.to);
     // this.opacity = 1 - animation_perc;
 
     if (animation.speed === 0) {
       this.alive = 0;
+      this.is_dying = 0;
     }
   }
 );

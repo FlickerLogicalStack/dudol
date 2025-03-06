@@ -21,6 +21,7 @@ export const create_enemy = (id, x, y) => ({
   height: 50.0,
 
   alive: 1,
+  is_dying: 0,
 
   is_visible: true,
   opacity: 1.0,
@@ -41,4 +42,42 @@ export const create_enemy = (id, x, y) => ({
 export const copy_enemy = (from, to) => {
   to.x = from.x;
   to.y = from.y;
+};
+
+/**
+ * @param {DUDOL.Entities.Enemy} platform
+ */
+export const clone_enemy = platform => {
+  const new_platform = create_enemy(platform.id, platform.x, platform.y);
+
+  return new_platform;
+};
+
+/**
+ * @param {DUDOL.Entities.Enemy[]} from
+ * @param {DUDOL.Entities.Enemy[]} to
+ */
+export const copy_enemies = (from, to) => {
+  const from_enemies_count = from.length;
+  const to_enemies_count = to.length;
+
+  const copy_count = Math.min(from_enemies_count, to_enemies_count);
+
+  for (var i = 0; i < copy_count; i++) {
+    copy_enemy(from[i], to[i]);
+  }
+
+  if (from_enemies_count !== to_enemies_count) {
+    if (to_enemies_count > from_enemies_count) {
+      to.length = from_enemies_count;
+    } else {
+      for (let i = to_enemies_count; i < from_enemies_count; i++) {
+        const platform_for_copy = from[i];
+
+        const clone = clone_enemy(platform_for_copy);
+
+        to.push(clone);
+      }
+    }
+  }
 };

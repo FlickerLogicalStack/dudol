@@ -70,5 +70,13 @@ export const render_platform = (engine, game, platform) => {
     engine.ctx.textAlign = 'center';
     engine.ctx.fillText(platform.id.toString(), platform.x + platform.width / 2, local_y - 16);
     engine.ctx.textAlign = 'start';
+
+    // engine.ctx.textAlign = 'center';
+    // engine.ctx.font = 'bold 16px monospace';
+    // engine.ctx.fillStyle = 'red';
+    // engine.ctx.fillText(`Y(${platform.x},${platform.y + platform.height})`, platform.x, local_y - 16);
+    // engine.ctx.fillText(`W(${platform.x + platform.width},${platform.y + platform.height})`, platform.x, local_y - 16);
+    // engine.ctx.fillText(`Z(${platform.x},${platform.y})`, platform.x, local_y - 16);
+    // engine.ctx.textAlign = 'start';
   }
 };

@@ -1,4 +1,4 @@
-import { cubic_bezier } from "../../utils.mjs";
+import { cubic_bezier } from '../../utils.mjs';
 
 /**
  * @param {DUDOL.EngineContext} engine
@@ -39,7 +39,6 @@ export const process_platform_animations = (engine, game) => {
     }
   }
 };
-
 
 export const platform_animation_x = /** @type {DUDOL.Entities.Animation<DUDOL.Entities.Platform>['apply']} */ (
   function (animation) {

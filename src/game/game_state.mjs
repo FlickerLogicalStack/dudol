@@ -1,9 +1,10 @@
+import { copy_platforms, create_platform } from './entities/platform/platform.mjs';
+import { copy_player, create_player } from './entities/player/player.mjs';
 import { create_camera } from './entities/camera/camera.mjs';
 import { create_debug } from './entities/debug/debug.mjs';
 import { create_physics } from './entities/physics/physics.mjs';
-import { create_platform } from './entities/platform/platform.mjs';
-import { copy_player, create_player } from './entities/player/player.mjs';
 import { create_progress } from './entities/progress/progress.mjs';
+import { copy_enemies } from './entities/enemy/enemy.mjs';
 
 /**
  * @param {DUDOL.EngineContext} engine
@@ -31,6 +32,7 @@ export const create_game_state = engine => {
     progress: progress,
 
     platforms_generator_enabled: 0,
+    enemies_generator_enabled: 0,
   };
 };
 
@@ -40,4 +42,7 @@ export const create_game_state = engine => {
  */
 export const copy_game_state = (from, to) => {
   copy_player(from.player, to.player);
+
+  copy_platforms(from.platforms, to.platforms);
+  copy_enemies(from.enemies, to.enemies);
 };

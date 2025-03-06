@@ -28,7 +28,12 @@ declare global {
       progress: DUDOL.Entities.Progress;
 
       platforms_generator_enabled: number;
+      enemies_generator_enabled: number;
     };
+
+    export type Point2 = { x: number; y: number };
+
+    export type Vector2 = { _1: Point2; _2: Point2 };
 
     export namespace Entities {
       export type Animation<T> = {
@@ -102,6 +107,7 @@ declare global {
         height: number;
 
         alive: number;
+        is_dying: number;
 
         is_visible: boolean;
         opacity: number;

@@ -95,7 +95,11 @@ export const loop = async (canvas, load_resources, game_state, on_frame) => {
     }.bind(loop_context);
 
   // @ts-expect-error
-  window.__ENGINE__ = { engine, game: loop_context.game.current };
+  window.__ENGINE__ = {
+    engine,
+    game: loop_context.game.current,
+    prev: loop_context.game.prev,
+  };
 
   requestAnimationFrame(outer_loop);
 };

@@ -28,14 +28,48 @@ export const create_platform = (id, x, y, width) => ({
  * @param {DUDOL.Entities.Platform} to
  */
 export const copy_platform = (from, to) => {
+  to.id = from.id;
+
   to.x = from.x;
   to.y = from.y;
   to.width = from.width;
   to.height = from.height;
+};
 
-  to.is_visible = from.is_visible;
-  to.is_in_x_borders = from.is_in_x_borders;
+/**
+ * @param {DUDOL.Entities.Platform} platform
+ */
+export const clone_platform = platform => {
+  const new_platform = create_platform(platform.id, platform.x, platform.y, platform.width);
 
-  to.is_visible = from.is_visible;
-  to.is_in_x_borders = from.is_in_x_borders;
+  return new_platform;
+};
+
+/**
+ * @param {DUDOL.Entities.Platform[]} from
+ * @param {DUDOL.Entities.Platform[]} to
+ */
+export const copy_platforms = (from, to) => {
+  const from_platfroms_count = from.length;
+  const to_platfroms_count = to.length;
+
+  const copy_count = Math.min(from_platfroms_count, to_platfroms_count);
+
+  for (var i = 0; i < copy_count; i++) {
+    copy_platform(from[i], to[i]);
+  }
+
+  if (from_platfroms_count !== to_platfroms_count) {
+    if (to_platfroms_count > from_platfroms_count) {
+      to.length = from_platfroms_count;
+    } else {
+      for (let i = to_platfroms_count; i < from_platfroms_count; i++) {
+        const platform_for_copy = from[i];
+
+        const clone = clone_platform(platform_for_copy);
+
+        to.push(clone);
+      }
+    }
+  }
 };
