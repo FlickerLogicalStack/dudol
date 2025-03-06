@@ -6,7 +6,7 @@ declare global {
   export type InferPromise<TPromise extends Promise<any>> = TPromise extends Promise<infer T> ? T : never;
 
   export namespace DUDOL {
-    export type Resources = InferPromise<ReturnType<typeof import('../game/resources.mjs')['load_resources']>>;
+    export type Resources = InferPromise<ReturnType<typeof import('../engine/resources/resources.mjs')['load_resources']>>;
 
     export type EngineContext<TResurces = Resources> = ReturnType<typeof create_engine_context<TResurces>>;
 

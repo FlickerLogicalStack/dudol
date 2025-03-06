@@ -25,7 +25,7 @@ export const render_player = (engine, game) => {
   }
 
   engine.ctx.drawImage(
-    engine.resources.sprites2,
+    engine.resources.sprites,
     SPRITE_X,
     SPRITE_Y,
     SPRITE_WIDTH,

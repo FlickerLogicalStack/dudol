@@ -20,33 +20,30 @@ export const render_background = (engine, game) => {
     offsetY = (engine.canvas.height - drawHeight) / 2;
   }
 
-  const image_breakpoint = offsetY + game.camera.y / 10;
+  const image_breakpoint = offsetY + game.camera.y - game.camera.offset;
 
-  // const gradient = engine.ctx.createLinearGradient(
-  //   0,
-  //   Math.min(-engine.canvas.height + image_breakpoint, 0) + 1,
-  //   0,
-  //   engine.canvas.height
-  // );
-  // gradient.addColorStop(0, 'black');
-  // gradient.addColorStop(1, '#d6edf7');
-
-  engine.ctx.fillStyle = '#cfeffc';
-  // engine.ctx.fillStyle = gradient;
-  engine.ctx.fillRect(0, 0, engine.canvas.width, image_breakpoint + 1);
-
-  // console.log(image_breakpoint);
-
-  engine.ctx.imageSmoothingEnabled = true;
-  engine.ctx.drawImage(
-    //
-    engine.resources.background,
-    offsetX,
-    image_breakpoint,
-    drawWidth,
-    drawHeight
+  const gradient = engine.ctx.createLinearGradient(
+    0,
+    0 + image_breakpoint,
+    0,
+    -engine.canvas.height * 100 + image_breakpoint
   );
 
-  // engine.ctx.fillStyle = 'red';
-  // engine.ctx.fillRect(0, image_breakpoint, engine.canvas.width, 1);
+  var d = 1 / 8;
+  var i = 0;
+  gradient.addColorStop(0, '#cfeffc');
+  gradient.addColorStop((i++, d * i), '#3d80cd');
+  gradient.addColorStop((i++, d * i), '#3672b6');
+  gradient.addColorStop((i++, d * i), '#3063a0');
+  gradient.addColorStop((i++, d * i), '#295589');
+  gradient.addColorStop((i++, d * i), '#224772');
+  gradient.addColorStop((i++, d * i), '#1b395b');
+  gradient.addColorStop((i++, d * i), '#142b44');
+  gradient.addColorStop((i++, d * i), '#0e1c2e');
+
+  engine.ctx.fillStyle = gradient;
+  engine.ctx.fillRect(0, 0, engine.canvas.width, engine.canvas.height);
+
+  // engine.ctx.imageSmoothingEnabled = true;
+  engine.ctx.drawImage(engine.resources.background, offsetX, image_breakpoint, drawWidth, drawHeight);
 };

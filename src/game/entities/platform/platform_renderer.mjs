@@ -21,7 +21,7 @@ export const render_platform = (engine, game, platform) => {
   const right = sprites_map[2];
 
   engine.ctx.drawImage(
-    engine.resources.sprites2,
+    engine.resources.sprites,
     left.x,
     left.y,
     left.size,
@@ -34,27 +34,27 @@ export const render_platform = (engine, game, platform) => {
 
   for (var i = 1; i < platform.width / 32 - 1; i++) {
     engine.ctx.drawImage(
-      engine.resources.sprites2,
+      engine.resources.sprites,
       center.x,
       center.y,
       center.size,
       center.size,
-      platform.x + 32 * i - 1,
+      platform.x + 32 * i - 1 * platform.moving,
       local_y,
-      platform.height + 1,
+      platform.height + 1 * platform.moving,
       platform.height
     );
   }
 
   engine.ctx.drawImage(
-    engine.resources.sprites2,
+    engine.resources.sprites,
     right.x,
     right.y,
     right.size,
     right.size,
-    platform.x + platform.width - platform.height - 1,
+    platform.x + platform.width - platform.height - 1 * platform.moving,
     local_y,
-    platform.height + 1,
+    platform.height + 1 * platform.moving,
     platform.height
   );
 

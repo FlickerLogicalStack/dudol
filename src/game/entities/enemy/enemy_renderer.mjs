@@ -21,7 +21,7 @@ export const render_enemy = (engine, game) => {
 
     engine.ctx.imageSmoothingEnabled = false;
     engine.ctx.drawImage(
-      engine.resources.sprites2,
+      engine.resources.sprites,
       sprite_info.x,
       sprite_info.y,
       sprite_info.size,

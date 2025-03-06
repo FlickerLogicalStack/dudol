@@ -19,7 +19,7 @@ export const render_particles = (engine, game) => {
       const y = engine.canvas.height - particle.center_y - particle.size / 2 + (game.camera.y - game.camera.offset);
 
       engine.ctx.drawImage(
-        engine.resources.sprites2,
+        engine.resources.sprites,
         sprite_info.x,
         sprite_info.y,
         sprite_info.size,
@@ -43,7 +43,7 @@ export const render_particles = (engine, game) => {
 
       engine.ctx.globalAlpha = lifetime_perc;
       engine.ctx.drawImage(
-        engine.resources.sprites2,
+        engine.resources.sprites,
         sprite_info.x,
         sprite_info.y,
         sprite_info.size,
@@ -68,7 +68,7 @@ export const render_particles = (engine, game) => {
 
       engine.ctx.globalAlpha = lifetime_perc;
       engine.ctx.drawImage(
-        engine.resources.sprites2,
+        engine.resources.sprites,
         sprite_info.x,
         sprite_info.y,
         sprite_info.size,

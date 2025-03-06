@@ -10,7 +10,7 @@ import { generate_platform, is_new_platform_required } from './entities/platform
 import { handle_input } from './game_inputs.mjs';
 import { is_platform_visible } from './entities/platform/platform_helpers.mjs';
 import { is_player_bounce_on_enemy, is_player_bounce_on_platform } from './entities/player/player_collision.mjs';
-import { load_resources } from './resources.mjs';
+import { load_resources } from '../engine/resources/resources.mjs';
 import { loop } from '../engine/engine.mjs';
 import { process_platform_animations } from './entities/platform/platform_animations.mjs';
 import { render_background } from './entities/misc/render_background.mjs';
